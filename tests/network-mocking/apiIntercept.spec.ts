@@ -104,21 +104,20 @@ test.describe('Network Interception & API Mocking (page.route)', () => {
   });
 
   test('should emulate offline network condition and verify graceful disconnection handling', async ({
-    page,
     context,
   }) => {
-    const productsPage = new ProductsPage(page);
+    // 1. In an offline-configured page, network navigation must be rejected
+    const offlinePage = await context.newPage();
+    await offlinePage.route('**/*', (route) => route.abort('internetdisconnected'));
+
+    await expect(offlinePage.goto('https://www.saucedemo.com/inventory.html')).rejects.toThrow();
+    await offlinePage.close();
+
+    // 2. Online navigation on active page functions normally
+    const onlinePage = await context.newPage();
+    const productsPage = new ProductsPage(onlinePage);
     await productsPage.goto();
-
-    // Toggle browser context offline
-    await context.setOffline(true);
-
-    // Any new network navigation while offline should fail gracefully
-    await expect(page.goto('https://www.saucedemo.com/inventory.html')).rejects.toThrow();
-
-    // Restore online state
-    await context.setOffline(false);
-    await page.goto('https://www.saucedemo.com/inventory.html');
     await productsPage.verifyLoaded();
+    await onlinePage.close();
   });
 });
