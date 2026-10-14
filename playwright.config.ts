@@ -11,7 +11,6 @@ export default defineConfig({
       animations: 'disabled',
     },
   },
-  updateSnapshots: 'missing',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: config.retries,

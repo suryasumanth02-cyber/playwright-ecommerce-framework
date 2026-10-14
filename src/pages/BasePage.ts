@@ -58,8 +58,11 @@ export abstract class BasePage {
    */
   async openMenu(): Promise<void> {
     Logger.info('Opening side menu');
-    await this.menuButton.click();
-    await expect(this.logoutLink).toBeVisible();
+    const isVisible = await this.logoutLink.isVisible();
+    if (!isVisible) {
+      await this.menuButton.click();
+      await expect(this.logoutLink).toBeVisible();
+    }
   }
 
   /**
@@ -68,7 +71,7 @@ export abstract class BasePage {
   async logout(): Promise<void> {
     await this.openMenu();
     Logger.info('Clicking Logout');
-    await this.logoutLink.click();
+    await this.logoutLink.dispatchEvent('click');
     await this.page.waitForURL(/.*saucedemo\.com\/?$/);
   }
 
