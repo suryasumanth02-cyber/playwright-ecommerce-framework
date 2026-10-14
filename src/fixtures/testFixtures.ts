@@ -4,6 +4,7 @@ import { ProductsPage } from '../pages/ProductsPage';
 import { CartPage } from '../pages/CartPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
 import { OrderConfirmationPage } from '../pages/OrderConfirmationPage';
+import { ProductDetailsPage } from '../pages/ProductDetailsPage';
 import { USERS, PRODUCTS } from '../data/testData';
 import { Logger } from '../utils/logger';
 
@@ -13,7 +14,7 @@ export interface CustomFixtures {
   cartPage: CartPage;
   checkoutPage: CheckoutPage;
   orderConfirmationPage: OrderConfirmationPage;
-  productDetailsPage: import('../pages/ProductDetailsPage').ProductDetailsPage;
+  productDetailsPage: ProductDetailsPage;
   loggedOutPage: LoginPage;
   authenticatedUserPage: ProductsPage;
   cartWithItemsFixture: { productsPage: ProductsPage; cartPage: CartPage };
@@ -46,7 +47,6 @@ export const test = base.extend<CustomFixtures>({
   },
 
   productDetailsPage: async ({ page }, use) => {
-    const { ProductDetailsPage } = await import('../pages/ProductDetailsPage');
     const productDetailsPage = new ProductDetailsPage(page);
     await use(productDetailsPage);
   },

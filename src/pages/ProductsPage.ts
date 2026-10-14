@@ -4,6 +4,7 @@ import { Product, ProductSortOption } from '../models/Product';
 import { PriceUtils } from '../utils/priceUtils';
 import { Logger } from '../utils/logger';
 import { CartPage } from './CartPage';
+import { ProductDetailsPage } from './ProductDetailsPage';
 
 export class ProductsPage extends BasePage {
   readonly inventoryContainer: Locator;
@@ -107,12 +108,12 @@ export class ProductsPage extends BasePage {
   /**
    * Clicks on product title to navigate to ProductDetailsPage
    */
-  async openProductDetails(productName: string): Promise<import('./ProductDetailsPage').ProductDetailsPage> {
+  async openProductDetails(productName: string): Promise<ProductDetailsPage> {
     Logger.info(`Opening product details for: ${productName}`);
+    await this.verifyLoaded();
     const item = this.inventoryItems.filter({ hasText: productName });
     await item.locator('[data-test="inventory-item-name"], .inventory_item_name').click();
     await this.page.waitForURL(/.*inventory-item\.html/);
-    const { ProductDetailsPage } = await import('./ProductDetailsPage');
     const detailsPage = new ProductDetailsPage(this.page);
     await detailsPage.verifyLoaded();
     return detailsPage;
