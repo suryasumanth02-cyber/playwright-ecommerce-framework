@@ -1,221 +1,204 @@
-# ⚡ Modern Full-Stack E-Commerce Test Automation Framework
-### Next-Gen SDET Portfolio: TypeScript • Microsoft Playwright • CI/CD
+# Playwright TypeScript E-Commerce Automation Framework
 
-[![Playwright Tests](https://img.shields.io/badge/Playwright-1.50+-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)](https://playwright.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Accessibility: axe-core](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blueviolet?style=for-the-badge&logo=accessibility&logoColor=white)](https://github.com/dequelabs/axe-core)
-[![GitHub Actions CI](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+An end-to-end test automation framework built using Microsoft Playwright and TypeScript for testing the SauceDemo e-commerce web application.
+
+The framework is designed to move beyond basic linear UI scripts by incorporating core patterns used in production test environments: Page Object Model (POM), custom fixtures, session storage reuse (`storageState`), network interception, accessibility scanning, visual snapshots, and CI/CD execution.
 
 ---
 
-## 📌 Executive Overview
+## Overview & Architecture
 
-This repository represents an **enterprise-grade, production-ready Test Automation Framework** engineered for a modern full-scale E-Commerce application ([SauceDemo](https://www.saucedemo.com/)).
+### Tech Stack
+- **Language**: TypeScript (strict mode enabled)
+- **Framework**: Microsoft Playwright Test (`@playwright/test`)
+- **Accessibility**: `@axe-core/playwright` (WCAG 2.1 AA rules)
+- **CI/CD**: GitHub Actions
+- **Target Application**: [SauceDemo](https://www.saucedemo.com/)
 
-Instead of basic linear "click-and-type" scripts, this framework is architected from the ground up to showcase the most advanced, high-demand capabilities in modern Software Development Engineering in Test (SDET):
-- **Page Object Model (POM)** with strict TypeScript interfaces and fluent method chaining.
-- **Custom Fixtures (`test.extend`)** to replace redundant `beforeEach` hooks with zero-boilerplate dependency injection.
-- **Session Reuse (`storageState`)** cutting execution time by **over 60%** via one-time authentication.
-- **Network Interception & API Mocking (`page.route`)** simulating out-of-stock items, 500 server errors, and offline modes without altering backends.
-- **Pixel-Level Visual Regression (`toHaveScreenshot`)** detecting CSS regressions and layout shifts.
-- **Automated WCAG 2.1 AA Accessibility Audits (`@axe-core/playwright`)** testing ARIA standards, color contrast, and keyboard navigation.
-- **Multi-Tab Context Synchronization** verifying concurrent browser tab cart persistence and synchronized logout.
-- **Security & Authorization Boundaries** auditing route guards, SQL injection neutralization, and XSS payload escape sanitization.
-- **Web Performance & Navigation Timing API** validating TTFB, DOMContentLoaded, and enforcing a zero-uncaught-console-exception policy.
-- **Specialized User Persona & Bug Detection** testing real defect behaviors across `problem_user` and `error_user`.
-- **CI/CD Pipeline Matrix** executing parallel headless cross-browser tests (Chromium, Firefox, WebKit, Mobile Viewports) with artifact publishing.
-
----
-
-## 💼 The Multi-Stack Advantage (Resume Powerhouse)
-
-Pairing this **Modern TypeScript + Playwright** repository with a **Java + Selenium WebDriver** project demonstrates multi-language versatility across legacy enterprise stacks and modern cloud-native architectures:
-
-| Capability | Project 1: Enterprise Banking | Project 2: Modern E-Commerce (This Framework) |
-| :--- | :--- | :--- |
-| **Language** | Java 17+ | **TypeScript 5.7+ / ESNext** |
-| **Core Tool** | Selenium WebDriver 4 | **Microsoft Playwright** |
-| **Architecture** | POM + TestNG + Maven | **POM + Custom Fixtures (`test.extend`) + Playwright Test** |
-| **State Strategy** | Manual UI login per test | **Global Session Reuse (`storageState`) + Hybrid Storage Injection** |
-| **Resilience** | Explicit/Fluent Waits | **Auto-Waiting, Web-First Assertions & Route Interception** |
-| **Mocking** | External WireMock Server | **Native In-Browser Request Routing (`page.route()`)** |
-| **Visual QA** | Manual or third-party plugins | **Native Pixel Snapshot Engine (`toHaveScreenshot`)** |
-| **Accessibility** | axe-selenium / manual audits | **Automated `@axe-core/playwright` WCAG 2.1 AA Scanning** |
-| **Diagnostics** | Allure Reports + Log4j | **Playwright Trace Viewer + Video Recordings + DOM Time-Travel** |
-| **CI/CD** | Jenkins / GitHub Actions | **GitHub Actions Multi-Browser Parallel Matrix** |
-
----
-
-## 🏗️ Project Architecture & Directory Structure
+### Project Layout
 
 ```text
-ecommerce-playwright-ts/
-├── .auth/                              # Cached storage states (session cookies & localStorage)
-├── .github/
-│   └── workflows/
-│       └── playwright.yml              # Multi-browser parallel CI/CD matrix pipeline
+├── .auth/                  # Generated storage states (cookies & session tokens)
+├── .github/workflows/      # GitHub Actions CI workflow definition
 ├── src/
-│   ├── config/
-│   │   └── environment.ts              # Centralized environment configs (timeouts, URLs, flags)
-│   ├── data/
-│   │   ├── mockPayloads.ts             # Mock HTTP responses, 500 payloads, promo HTML
-│   │   └── testData.ts                 # Test users, catalog metadata, error string constants
-│   ├── fixtures/
-│   │   └── testFixtures.ts             # Custom test.extend fixtures for dependency injection
-│   ├── models/
-│   │   ├── Order.ts                    # Customer, order summary, confirmation interfaces
-│   │   ├── Product.ts                  # Product catalog, sorting options, cart item interfaces
-│   │   └── User.ts                     # User credentials and test account role types
-│   ├── pages/
-│   │   ├── BasePage.ts                 # Common locators, navigation, header actions, logging
-│   │   ├── LoginPage.ts                # Fluent authentication flows & validation error checks
-│   │   ├── ProductsPage.ts             # Catalog browsing, sort filters, cart badge interactions
-│   │   ├── ProductDetailsPage.ts       # PDP metadata verification, item toggle, back-navigation
-│   │   ├── CartPage.ts                 # Cart verification, item removal, checkout trigger
-│   │   ├── CheckoutPage.ts             # Customer details, subtotal/tax calculations, overview
-│   │   └── OrderConfirmationPage.ts    # Order dispatch verification and receipt details
-│   └── utils/
-│       ├── logger.ts                   # Timestamped color-coded test execution logger
-│       └── priceUtils.ts               # Currency regex extraction & mathematical sort verifiers
+│   ├── config/             # Environment configs (base URLs, timeouts)
+│   ├── data/               # Test data, credentials, and mock API payloads
+│   ├── fixtures/           # Custom Playwright fixtures (test.extend)
+│   ├── models/             # TypeScript interfaces (Product, User, Order)
+│   ├── pages/              # Page Object Model classes
+│   │   ├── BasePage.ts
+│   │   ├── LoginPage.ts
+│   │   ├── ProductsPage.ts
+│   │   ├── ProductDetailsPage.ts
+│   │   ├── CartPage.ts
+│   │   ├── CheckoutPage.ts
+│   │   └── OrderConfirmationPage.ts
+│   └── utils/              # Math helpers, price parsing, custom logger
 ├── tests/
-│   ├── setup/
-│   │   └── auth.setup.ts               # Global authentication worker saving session state
-│   ├── auth/
-│   │   ├── login.spec.ts               # Valid, invalid, locked-out, performance glitch tests
-│   │   └── security.spec.ts            # Route guards, cookie revocation, SQLi, XSS neutralization
-│   ├── e2e/
-│   │   ├── bulkPurchase.spec.ts        # Full 6-item catalog purchase with aggregate math
-│   │   ├── cartManagement.spec.ts      # Cart badge counts, item removals, state reset
-│   │   ├── checkoutJourney.spec.ts     # End-to-end purchasing, tax/total math verification
-│   │   ├── multiTabSync.spec.ts        # Concurrent browser tab sync and cross-tab logout
-│   │   ├── productDetails.spec.ts      # Product details page (PDP) metadata & item add/remove
-│   │   └── productSorting.spec.ts      # Catalog sorting algorithms (A-Z, Z-A, Low-High, High-Low)
-│   ├── visual/
-│   │   └── visualRegression.spec.ts    # Component-level snapshots (cards, cart, navigation)
-│   ├── network-mocking/
-│   │   └── apiIntercept.spec.ts        # route.fetch mutation, 500 server errors, offline mode
-│   ├── api/
-│   │   └── hybridState.spec.ts         # Fast storage injection & APIRequestContext verification
-│   ├── accessibility/
-│   │   └── wcagAccessibility.spec.ts   # Automated WCAG 2.1 AA scans with axe-core
-│   ├── performance/
-│   │   └── webVitals.spec.ts           # Navigation Timings, TTFB, and zero console error checks
-│   └── personas/
-│       └── userPersonas.spec.ts        # Defect audits for problem_user & error_user personas
-├── playwright.config.ts                # Multi-project browser matrix & execution configuration
+│   ├── setup/              # Global auth setup project
+│   ├── auth/               # Login & security audit tests
+│   ├── e2e/                # Checkout, cart, sorting, PDP, and bulk purchase flows
+│   ├── accessibility/      # axe-core WCAG 2.1 AA compliance scans
+│   ├── network-mocking/    # page.route API intercepts & offline simulation
+│   ├── api/                # Storage injection & direct request API checks
+│   ├── performance/        # Navigation timings & console error monitoring
+│   ├── personas/           # Testing problem_user and error_user behaviors
+│   └── visual/             # Component-level visual snapshot tests
+├── playwright.config.ts    # Browser matrix, workers, reporters, and device settings
 ├── package.json
-└── tsconfig.json                       # Strict TypeScript compiler options & alias mapping
+└── tsconfig.json
 ```
 
 ---
 
-## 🚀 Key Modules & Technical Deep Dive
+## Key Framework Features
 
-### 1. Page Object Model with Strict TypeScript Typing
-Every page object extends `BasePage` and utilizes Playwright's locator engine. Methods are strongly typed and return either next-step page objects (fluent interface) or validated data models:
+### 1. Page Object Model with Strict Typing
+Every page has a corresponding class inheriting from `BasePage`. Locators and interactions are encapsulated within these classes, and methods return either the next page instance or typed data models (e.g., `Product`, `OrderSummary`).
+
 ```typescript
 const productsPage = await loginPage.loginAs(USERS.standard);
-const detailsPage = await productsPage.openProductDetails(PRODUCTS.backpack.name);
-const cartPage = await detailsPage.goToCart();
+const cartPage = await productsPage.goToCart();
 const checkoutPage = await cartPage.proceedToCheckout();
 ```
 
-### 2. Custom Fixtures (`test.extend`) — Zero Boilerplate
-Instead of cluttering test files with repetitive `beforeEach` navigation and login steps, tests inject high-level pre-configured fixtures:
+### 2. Custom Fixtures (`test.extend`)
+Instead of copy-pasting login and navigation steps into `beforeEach` hooks in every test file, tests declare what state they need via fixtures:
+- `authenticatedUserPage`: Opens the app with a valid session already active.
+- `cartWithItemsFixture`: Injects an authenticated session pre-populated with items in the cart.
+- `loggedOutPage`: Ensures a clean, unauthenticated context with cleared cookies and local storage.
+
 ```typescript
 test('should remove items directly from cart', async ({ cartWithItemsFixture }) => {
   const { cartPage } = cartWithItemsFixture;
-  await cartPage.removeItem(PRODUCTS.backpack.name);
+  await cartPage.removeItem('Sauce Labs Backpack');
   expect(await cartPage.getCartItemCount()).toBe(1);
 });
 ```
 
-### 3. Session Reuse (`storageState`) — >60% Faster Runs
-An authentication setup project (`auth.setup.ts`) logs in once at the start of the test run, captures the authenticated browser cookies and `localStorage`, and serializes them to `.auth/user.json`. Subsequent test workers reuse this state directly without hitting the login page.
+### 3. Session Reuse via `storageState`
+Repeatedly logging in through the UI for every test adds significant overhead. The framework uses a setup project (`tests/setup/auth.setup.ts`) that logs in once before the suite runs, saves the browser session cookies and local storage to `.auth/user.json`, and feeds that file to worker threads. Tests that specifically validate login edge cases override this with an empty storage state.
 
-### 4. Network Interception & API Mocking (`page.route()`)
-Tests dynamically intercept HTTP traffic directly inside the browser engine:
-- **Response Mutation:** Intercepts client bundles to dynamically label items as `[OUT OF STOCK]`.
-- **UI Injection:** Injects custom promotional flash-sale banners into the DOM before page rendering.
-- **Resilience Testing:** Simulates 500 server errors on background telemetry.
-- **Network Throttling:** Simulates offline and slow cellular network conditions.
+### 4. Network Interception & API Mocking (`page.route`)
+Tests use Playwright's `page.route()` to modify network traffic in-flight:
+- Modifying client-side asset responses to simulate out-of-stock items.
+- Injected custom HTML promotional banners directly into responses before page rendering.
+- Mocking 500 internal server errors on external telemetry endpoints to check frontend resilience.
+- Aborting image requests (`**/*.jpg`) to verify low-bandwidth scenarios.
+- Simulating network disconnection with `context.setOffline(true)`.
 
-### 5. Automated WCAG 2.1 AA Accessibility Scanning (`axe-core`)
-Leverages `@axe-core/playwright` to conduct accessibility audits on Login, Catalog, and Cart views, ensuring zero critical accessibility regressions.
+### 5. Automated Accessibility Auditing (`axe-core`)
+Integrated `@axe-core/playwright` to run automated accessibility checks across the login page, product catalog, and checkout flows against WCAG 2.1 AA standards, catching missing labels, contrast bugs, and bad ARIA attributes.
 
 ### 6. Multi-Tab State Synchronization
-Demonstrates advanced browser context orchestration by launching concurrent pages in the same browser context, validating that cart additions and logout events synchronize instantly across tabs.
+Uses `context.newPage()` to open multiple tabs within the same browser context to test that cart updates made in Tab 1 reflect in Tab 2, and that logging out in one tab invalidates the session across other open tabs.
 
-### 7. Security & Input Sanitization Auditing
-Verifies unauthorized URL protections on protected routes (`/cart.html`, `/inventory.html`), asserts cookie invalidation mid-session, and tests immunity against SQL injection and XSS payloads in customer forms.
+### 7. Security & Input Sanitization
+Includes tests that verify:
+- Protected routes (`/inventory.html`, `/cart.html`, `/checkout-step-one.html`) cannot be reached without an active session.
+- Session termination when cookies are cleared mid-flow.
+- Form resistance to SQL injection payloads and XSS strings in checkout fields.
 
-### 8. Web Performance & Console Hygiene Audits
-Uses the W3C Navigation Timing API (`performance.getEntriesByType('navigation')`) to ensure page load metrics (TTFB, DOMContentLoaded) remain well within SLA budgets, and listens to `page.on('pageerror')` to enforce zero uncaught runtime exceptions.
+### 8. Visual Regression Testing
+Uses Playwright's `toHaveScreenshot()` to take component-level snapshots (e.g., login card, product card, header, cart list) and compare them against baselines to catch unintended CSS or layout regressions.
 
 ---
 
-## ⚡ Quick Start & Execution
+## Test Suites
+
+The repository contains 51 automated tests covering:
+
+| Suite | File | Description |
+| :--- | :--- | :--- |
+| **Auth** | `tests/auth/login.spec.ts` | Valid, invalid, empty inputs, locked-out user, performance glitch, logout |
+| **Security** | `tests/auth/security.spec.ts` | Direct URL protection, cookie revocation, SQL injection, XSS checks |
+| **Checkout** | `tests/e2e/checkoutJourney.spec.ts` | Complete purchase flow, tax/total calculation, required field validations |
+| **Cart** | `tests/e2e/cartManagement.spec.ts` | Add/remove items, badge counts, navigation persistence, reset app state |
+| **Sorting** | `tests/e2e/productSorting.spec.ts` | A-Z, Z-A, price low-to-high, price high-to-low sorting logic |
+| **Details (PDP)** | `tests/e2e/productDetails.spec.ts` | Product detail page metadata, add/remove toggles, back navigation |
+| **Bulk Order** | `tests/e2e/bulkPurchase.spec.ts` | Ordering all 6 catalog items at once, verifying aggregate price math |
+| **Multi-Tab** | `tests/e2e/multiTabSync.spec.ts` | State persistence across concurrent browser tabs, cross-tab logout |
+| **Accessibility** | `tests/accessibility/wcagAccessibility.spec.ts` | axe-core WCAG 2.1 AA compliance scans |
+| **Network Mocking** | `tests/network-mocking/apiIntercept.spec.ts` | Route rewriting, banner injection, 500 error handling, offline mode |
+| **Fast State API** | `tests/api/hybridState.spec.ts` | Fast state injection via localStorage, direct HTTP API checks |
+| **Performance** | `tests/performance/webVitals.spec.ts` | Navigation Timing API metrics (TTFB, DOM ready), zero console error check |
+| **User Personas** | `tests/personas/userPersonas.spec.ts` | Detecting real bugs in `problem_user` (broken images, broken form) and `error_user` |
+| **Visual QA** | `tests/visual/visualRegression.spec.ts` | Pixel-level baseline comparisons for UI components |
+
+---
+
+## Getting Started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) v18.0.0 or higher
-- npm v9.0.0 or higher
+- Node.js 18 or newer
+- npm 9 or newer
 
-### 1. Installation
+### Installation
+
 ```bash
 # Clone the repository
 git clone https://github.com/suryasumanth02-cyber/playwright-ecommerce-framework.git
 cd playwright-ecommerce-framework
 
-# Install project dependencies
+# Install dependencies
 npm install
 
-# Install Playwright browsers (Chromium, Firefox, WebKit)
+# Download Playwright browsers
 npx playwright install --with-deps
-```
-
-### 2. Running Tests
-```bash
-# Run full 51+ test suite across Chromium
-npm run test:chromium
-
-# Run full cross-browser matrix
-npm test
-
-# Open interactive Playwright UI Mode (Visual runner with time-travel)
-npm run test:ui
-
-# Run specific functional suites
-npm run test:auth
-npm run test:security
-npm run test:e2e
-npm run test:a11y
-npm run test:perf
-npm run test:personas
-npm run test:visual
-npm run test:mock
-npm run test:api
-npm run test:mobile
-```
-
-### 3. Viewing Test Reports & Traces
-```bash
-# Open interactive HTML test report
-npm run report
-
-# Inspect a captured trace file
-npx playwright show-trace test-results/.../trace.zip
 ```
 
 ---
 
-## 📝 Resume Bullet Points (Ready to Use)
+## Running Tests
 
-> **Lead SDET / Senior Test Automation Engineer**
-> - *Architected an enterprise-grade E-Commerce test automation framework using Playwright and TypeScript, implementing Page Object Model (POM), custom fixtures (`test.extend`), and strict type contracts across 50+ automated scenarios.*
-> - *Engineered a one-time global session reuse strategy (`storageState`) that eliminated redundant authentication cycles across parallel workers, reducing overall suite execution time by over 60%.*
-> - *Developed advanced network interception tests utilizing `page.route()` to simulate edge-case scenarios including out-of-stock product statuses, 500 internal server errors, and offline modes without modifying live databases.*
-> - *Integrated `@axe-core/playwright` to establish automated WCAG 2.1 AA accessibility regression audits across key user funnels, guaranteeing zero critical accessibility violations.*
-> - *Orchestrated multi-tab browser context synchronization tests to validate real-time state persistence and cross-window session invalidation.*
-> - *Configured a cross-browser GitHub Actions CI/CD matrix executing headless tests on Chromium, Firefox, and WebKit with automated artifact archiving and trace diagnostic generation.*
+```bash
+# Run all tests on Chromium
+npm run test:chromium
+
+# Run full cross-browser test suite (Chromium, Firefox, WebKit)
+npm test
+
+# Run tests in interactive UI Mode (time-travel debugging)
+npm run test:ui
+
+# Run tests in headed browser mode
+npm run test:headed
+
+# Run individual test suites
+npm run test:auth          # Authentication tests
+npm run test:security      # Security and route protection tests
+npm run test:e2e           # End-to-end shopping & checkout flows
+npm run test:a11y          # axe-core accessibility audits
+npm run test:perf          # Performance SLAs & console error checks
+npm run test:personas      # problem_user and error_user tests
+npm run test:mock          # Network route interception tests
+npm run test:visual        # Visual snapshot comparisons
+npm run test:api           # Fast storage injection tests
+npm run test:mobile        # Mobile viewport emulation (Pixel 7)
+
+# Type check TypeScript files without running tests
+npm run typecheck
+```
+
+### Viewing Test Reports & Traces
+
+After a test run, open the HTML report:
+
+```bash
+npm run report
+```
+
+To view a trace captured on a failed test:
+
+```bash
+npx playwright show-trace test-results/<path-to-trace>/trace.zip
+```
+
+---
+
+## CI/CD Pipeline
+
+The repository includes a GitHub Actions workflow (`.github/workflows/playwright.yml`) that:
+1. Triggers on pushes and pull requests to `main`.
+2. Runs the tests across a browser matrix (Chromium, Firefox, WebKit) in parallel on Ubuntu runners.
+3. Automatically archives Playwright HTML reports and failure traces as workflow artifacts.
