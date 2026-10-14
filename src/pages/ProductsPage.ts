@@ -31,6 +31,7 @@ export class ProductsPage extends BasePage {
   async verifyLoaded(): Promise<void> {
     await expect(this.pageTitle).toHaveText('Products');
     await expect(this.inventoryContainer).toBeVisible();
+    await expect(this.inventoryItems.first()).toBeVisible();
   }
 
   /**
