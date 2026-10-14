@@ -46,6 +46,17 @@ export abstract class BasePage {
   }
 
   /**
+   * Asserts the cart badge count with automatic retry
+   */
+  async expectCartCount(expectedCount: number): Promise<void> {
+    if (expectedCount === 0) {
+      await expect(this.cartBadge).not.toBeVisible();
+    } else {
+      await expect(this.cartBadge).toHaveText(expectedCount.toString());
+    }
+  }
+
+  /**
    * Open shopping cart
    */
   async openCart(): Promise<void> {

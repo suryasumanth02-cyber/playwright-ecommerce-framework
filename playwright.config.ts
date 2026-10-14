@@ -18,6 +18,7 @@ export default defineConfig({
   reporter: [
     ['html', { open: 'never' }],
     ['list'],
+    ...(process.env.CI ? [['github'] as const] : []),
     ['json', { outputFile: 'test-results/test-results.json' }],
   ],
   use: {

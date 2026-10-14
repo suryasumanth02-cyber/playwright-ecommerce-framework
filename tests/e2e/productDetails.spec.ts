@@ -8,11 +8,14 @@ test.describe('Product Details Page (PDP) Navigation & Actions', () => {
     const productsPage = authenticatedUserPage;
     const detailsPage = await productsPage.openProductDetails(PRODUCTS.backpack.name);
 
+    await expect(detailsPage.itemName).toHaveText(PRODUCTS.backpack.name);
+    await expect(detailsPage.itemPrice).toHaveText(`$${PRODUCTS.backpack.price}`);
+    await expect(detailsPage.itemDescription).toContainText('carry.allTheThings()');
+    await expect(detailsPage.itemImage).toHaveAttribute('src', /.*sauce-backpack.*/);
+
     const details = await detailsPage.getProductDetails();
     expect(details.name).toBe(PRODUCTS.backpack.name);
     expect(details.price).toBe(PRODUCTS.backpack.price);
-    expect(details.description).toContain('carry.allTheThings()');
-    expect(details.imageUrl).toContain('sauce-backpack');
   });
 
   test('should add and remove products directly from the Product Details Page', async ({
@@ -23,12 +26,12 @@ test.describe('Product Details Page (PDP) Navigation & Actions', () => {
 
     // Add item on details page
     await detailsPage.addToCart();
-    expect(await detailsPage.getCartItemCount()).toBe(1);
+    await detailsPage.expectCartCount(1);
     await expect(detailsPage.removeButton).toBeVisible();
 
     // Remove item on details page
     await detailsPage.removeFromCart();
-    expect(await detailsPage.getCartItemCount()).toBe(0);
+    await detailsPage.expectCartCount(0);
     await expect(detailsPage.addToCartButton).toBeVisible();
   });
 
@@ -39,15 +42,14 @@ test.describe('Product Details Page (PDP) Navigation & Actions', () => {
     const detailsPage = await productsPage.openProductDetails(PRODUCTS.fleeceJacket.name);
 
     await detailsPage.addToCart();
-    expect(await detailsPage.getCartItemCount()).toBe(1);
+    await detailsPage.expectCartCount(1);
 
     // Navigate back to catalog
     const returnedCatalog = await detailsPage.backToProducts();
-    await returnedCatalog.verifyLoaded();
-    expect(await returnedCatalog.getCartItemCount()).toBe(1);
+    await returnedCatalog.expectCartCount(1);
 
     // Clean up
     await returnedCatalog.removeProductFromCart(PRODUCTS.fleeceJacket.name);
-    expect(await returnedCatalog.getCartItemCount()).toBe(0);
+    await returnedCatalog.expectCartCount(0);
   });
 });
