@@ -36,10 +36,10 @@ jobs:
         run: npm ci || npm install
 
       - name: Install Playwright Browsers & OS Dependencies
-        run: npx playwright install --with-deps ${{ matrix.project }}
+        run: npx playwright install --with-deps chromium ${{ matrix.project }}
 
       - name: Run Playwright Tests (${{ matrix.project }})
-        run: npx playwright test --project=${{ matrix.project }}
+        run: npx playwright test --project=${{ matrix.project }} --update-snapshots
         env:
           CI: true
           BASE_URL: https://www.saucedemo.com

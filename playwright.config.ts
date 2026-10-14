@@ -6,7 +6,12 @@ export default defineConfig({
   timeout: config.defaultTimeout,
   expect: {
     timeout: 8000,
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.1,
+      animations: 'disabled',
+    },
   },
+  updateSnapshots: 'missing',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: config.retries,
@@ -31,6 +36,9 @@ export default defineConfig({
     {
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
 
     // Desktop Browsers (reusing storageState from setup)
