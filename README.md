@@ -165,8 +165,8 @@ Uses the W3C Navigation Timing API (`performance.getEntriesByType('navigation')`
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/ecommerce-playwright-ts.git
-cd ecommerce-playwright-ts
+git clone https://github.com/suryasumanth02-cyber/playwright-ecommerce-framework.git
+cd playwright-ecommerce-framework
 
 # Install project dependencies
 npm install
