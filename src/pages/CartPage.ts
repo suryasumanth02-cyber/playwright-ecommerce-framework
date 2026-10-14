@@ -87,7 +87,10 @@ export class CartPage extends BasePage {
   async continueShopping(): Promise<ProductsPage> {
     Logger.info('Clicking Continue Shopping');
     await this.continueShoppingButton.click();
-    return new ProductsPage(this.page);
+    await this.page.waitForURL(/.*inventory\.html/);
+    const productsPage = new ProductsPage(this.page);
+    await productsPage.verifyLoaded();
+    return productsPage;
   }
 
   /**
@@ -96,6 +99,9 @@ export class CartPage extends BasePage {
   async proceedToCheckout(): Promise<CheckoutPage> {
     Logger.info('Proceeding to Checkout');
     await this.checkoutButton.click();
-    return new CheckoutPage(this.page);
+    await this.page.waitForURL(/.*checkout-step-one\.html/);
+    const checkoutPage = new CheckoutPage(this.page);
+    await checkoutPage.verifyStepOneLoaded();
+    return checkoutPage;
   }
 }

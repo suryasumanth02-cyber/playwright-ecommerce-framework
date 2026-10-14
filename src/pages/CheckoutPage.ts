@@ -96,6 +96,9 @@ export class CheckoutPage extends BasePage {
   async clickFinish(): Promise<OrderConfirmationPage> {
     Logger.info('Clicking Finish order');
     await this.finishButton.click();
-    return new OrderConfirmationPage(this.page);
+    await this.page.waitForURL(/.*checkout-complete\.html/);
+    const confirmationPage = new OrderConfirmationPage(this.page);
+    await confirmationPage.verifyLoaded();
+    return confirmationPage;
   }
 }

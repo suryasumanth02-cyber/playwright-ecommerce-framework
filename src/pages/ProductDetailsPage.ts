@@ -61,6 +61,7 @@ export class ProductDetailsPage extends BasePage {
   async backToProducts(): Promise<ProductsPage> {
     Logger.info('Navigating back to products catalog');
     await this.backToProductsButton.click();
+    await this.page.waitForURL(/.*inventory\.html/);
     return new ProductsPage(this.page);
   }
 }

@@ -33,6 +33,9 @@ export class OrderConfirmationPage extends BasePage {
   async clickBackHome(): Promise<ProductsPage> {
     Logger.info('Clicking Back Home');
     await this.backHomeButton.click();
-    return new ProductsPage(this.page);
+    await this.page.waitForURL(/.*inventory\.html/);
+    const productsPage = new ProductsPage(this.page);
+    await productsPage.verifyLoaded();
+    return productsPage;
   }
 }

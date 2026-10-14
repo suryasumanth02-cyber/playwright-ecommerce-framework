@@ -110,6 +110,7 @@ export class ProductsPage extends BasePage {
     Logger.info(`Opening product details for: ${productName}`);
     const item = this.inventoryItems.filter({ hasText: productName });
     await item.locator('[data-test="inventory-item-name"], .inventory_item_name').click();
+    await this.page.waitForURL(/.*inventory-item\.html/);
     const { ProductDetailsPage } = await import('./ProductDetailsPage');
     const detailsPage = new ProductDetailsPage(this.page);
     await detailsPage.verifyLoaded();
@@ -121,6 +122,8 @@ export class ProductsPage extends BasePage {
    */
   async goToCart(): Promise<CartPage> {
     await this.openCart();
-    return new CartPage(this.page);
+    const cartPage = new CartPage(this.page);
+    await cartPage.verifyLoaded();
+    return cartPage;
   }
 }

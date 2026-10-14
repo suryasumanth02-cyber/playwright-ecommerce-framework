@@ -11,16 +11,12 @@ test.describe('Hybrid API & Fast State Injection', () => {
 
     // 1. Inject auth cookie directly
     await context.addCookies([
-      {
-        name: 'session-username',
-        value: 'standard_user',
-        domain: 'www.saucedemo.com',
-        path: '/',
-        httpOnly: false,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ]);
+       {
+         name: 'session-username',
+         value: 'standard_user',
+         url: 'https://www.saucedemo.com',
+       },
+     ]);
 
     // 2. Open base page to establish origin localStorage context
     await page.goto('/');

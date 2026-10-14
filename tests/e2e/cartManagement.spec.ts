@@ -69,8 +69,7 @@ test.describe('Shopping Cart Operations & State Persistence', () => {
     expect(await cartPage.getCartItemCount()).toBe(2);
 
     // Open menu and reset app state
-    await cartPage.openMenu();
-    await cartPage.resetAppStateLink.click();
+    await cartPage.resetAppState();
 
     // Verify badge disappears
     await expect(cartPage.cartBadge).not.toBeVisible();

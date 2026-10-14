@@ -51,6 +51,7 @@ export abstract class BasePage {
   async openCart(): Promise<void> {
     Logger.info('Clicking shopping cart icon');
     await this.cartIcon.click();
+    await this.page.waitForURL(/.*cart\.html/);
   }
 
   /**
@@ -60,9 +61,23 @@ export abstract class BasePage {
     Logger.info('Opening side menu');
     const isVisible = await this.logoutLink.isVisible();
     if (!isVisible) {
-      await this.menuButton.click();
-      await expect(this.logoutLink).toBeVisible();
+      await this.menuButton.click({ force: true });
+      try {
+        await expect(this.logoutLink).toBeVisible({ timeout: 2000 });
+      } catch {
+        await this.menuButton.dispatchEvent('click');
+        await expect(this.logoutLink).toBeVisible();
+      }
     }
+  }
+
+  /**
+   * Reset application state via side menu
+   */
+  async resetAppState(): Promise<void> {
+    await this.openMenu();
+    Logger.info('Clicking Reset App State');
+    await this.resetAppStateLink.dispatchEvent('click');
   }
 
   /**

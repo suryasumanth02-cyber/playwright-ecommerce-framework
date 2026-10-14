@@ -82,6 +82,18 @@ export const test = base.extend<CustomFixtures>({
       await loginPage.loginAs(USERS.standard);
     }
 
+    // Ensure pristine cart state across tests
+    const hadCartItems = await page.evaluate(() => {
+      const hasCart = !!localStorage.getItem('cart-contents');
+      if (hasCart) {
+        localStorage.removeItem('cart-contents');
+      }
+      return hasCart;
+    });
+    if (hadCartItems) {
+      await page.reload();
+    }
+
     const productsPage = new ProductsPage(page);
     await productsPage.verifyLoaded();
     await use(productsPage);
@@ -99,6 +111,12 @@ export const test = base.extend<CustomFixtures>({
       await loginPage.goto();
       await loginPage.loginAs(USERS.standard);
     }
+
+    // Reset any prior cart items before adding fresh fixture items
+    await page.evaluate(() => {
+      localStorage.removeItem('cart-contents');
+    });
+    await page.reload();
 
     const productsPage = new ProductsPage(page);
     await productsPage.verifyLoaded();
