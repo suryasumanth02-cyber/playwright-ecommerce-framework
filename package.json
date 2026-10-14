@@ -1,0 +1,49 @@
+{
+  "name": "ecommerce-playwright-ts",
+  "version": "1.0.0",
+  "description": "Production-grade E-Commerce Test Automation Framework with Playwright, TypeScript, POM, Custom Fixtures, Network Mocking, Visual Regression, and CI/CD",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:auth": "playwright test tests/auth",
+    "test:security": "playwright test tests/auth/security.spec.ts",
+    "test:e2e": "playwright test tests/e2e",
+    "test:visual": "playwright test tests/visual",
+    "test:visual:update": "playwright test tests/visual --update-snapshots",
+    "test:mock": "playwright test tests/network-mocking",
+    "test:api": "playwright test tests/api",
+    "test:a11y": "playwright test tests/accessibility",
+    "test:perf": "playwright test tests/performance",
+    "test:personas": "playwright test tests/personas",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project=\"Mobile Chrome\"",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen https://www.saucedemo.com",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "test-automation",
+    "sdet",
+    "page-object-model",
+    "fixtures",
+    "visual-regression",
+    "network-mocking",
+    "ci-cd",
+    "ecommerce"
+  ],
+  "author": "SDET Portfolio",
+  "license": "MIT",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.0.0",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.0"
+  }
+}
