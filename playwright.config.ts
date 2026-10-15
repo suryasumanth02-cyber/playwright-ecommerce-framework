@@ -23,7 +23,6 @@ export default defineConfig({
   ],
   use: {
     baseURL: config.baseUrl,
-    headless: config.isHeadless,
     actionTimeout: 10000,
     navigationTimeout: config.navigationTimeout,
     trace: 'retain-on-failure',
