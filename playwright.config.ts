@@ -28,6 +28,9 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    launchOptions: {
+      slowMo: Number(process.env.SLOWMO) || 0,
+    },
   },
 
   projects: [
@@ -45,6 +48,15 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        storageState: config.authFile,
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
         storageState: config.authFile,
       },
       dependencies: ['setup'],

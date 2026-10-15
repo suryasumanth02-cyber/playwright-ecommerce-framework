@@ -18,6 +18,7 @@
     "test:perf": "playwright test tests/performance",
     "test:personas": "playwright test tests/personas",
     "test:chromium": "playwright test --project=chromium",
+    "test:chrome": "playwright test --project=chrome --headed",
     "test:firefox": "playwright test --project=firefox",
     "test:webkit": "playwright test --project=webkit",
     "test:mobile": "playwright test --project=\"Mobile Chrome\"",
